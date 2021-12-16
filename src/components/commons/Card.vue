@@ -1,15 +1,18 @@
 <template>
   <div class="card">
-    <img src="https:\/\/www.onstageweb.com\/wp-content\/uploads\/2018\/09\/bon-jovi-new-jersey.jpg" alt="">
-    <span class="title">new jersey</span>
-    <span class="artist">Bon Jovi</span>
-    <span class="date">1998</span>
+    <img :src="song.poster" :alt="song.autor + 'song' ">
+    <span class="title">{{song.title}}</span>
+    <span class="artist">{{song.author}}</span>
+    <span class="date">{{song.year}}</span>
   </div>
 </template>
 
 <script>
 export default {
-  name:'Card'
+  name:'Card',
+  props: {
+    song: Object
+  }
 }
 </script>
 
@@ -18,20 +21,20 @@ export default {
 
   .card {
     background-color: $darkPrimary;
-    margin: 0 1rem;
-    padding: 2rem 0;
+    margin: 1rem;
+    padding: 2rem;
     border-radius: 8px;
 
     img {
-      width: 80%;
+      width: 100%;
       border-radius: 8px;
     }
 
     .title {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       text-transform: uppercase;
       color: $whitePrimary;
-      margin: .8rem 0 .3rem;
+      margin: 1.2rem 0 .3rem;
     }
 
     .artist,
