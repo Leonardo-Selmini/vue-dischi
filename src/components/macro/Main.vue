@@ -1,41 +1,53 @@
 <template>
   <main>
-    <div class="card-container">
-      <Card class="card" v-for="(song, index) in songs" :key="index" :song="song"/>
+    <div class="card-container" v-if="songs != null">
+      <Card
+        class="card"
+        v-for="(song, index) in songs"
+        :key="index"
+        :song="song"
+      />
+    </div>
+    <div class="load" v-else>
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
     </div>
   </main>
 </template>
 
 <script>
-import Card from './../commons/Card.vue';
-import axios from '../../../node_modules/axios';
+import Card from "./../commons/Card.vue";
+import axios from "../../../node_modules/axios";
 
 export default {
-  name: 'Main',
+  name: "Main",
   components: {
-    Card
+    Card,
   },
   data() {
     return {
       songs: null,
-    }
+    };
   },
   created() {
-    axios.get('https://flynn.boolean.careers/exercises/api/array/music')
-    .then((response) => {
-      // handle success
-      this.songs = response.data.response
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-  }
-}
+    axios
+      .get("https://flynn.boolean.careers/exercises/api/array/music")
+      .then((response) => {
+        // handle success
+        this.songs = response.data.response;
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/variables.scss';
+@import "../../assets/variables.scss";
 
 main {
   height: 90vh;
@@ -49,18 +61,57 @@ main {
     margin: 0 auto;
     padding: 2rem 0;
 
-    
     .card {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      transition: filter .5s;
-      filter: brightness(.9);
+      transition: filter 0.5s;
+      filter: brightness(0.9);
 
       &:hover {
         cursor: pointer;
         filter: brightness(1.1);
+      }
+    }
+  }
+
+  .load {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .lds-ripple {
+      display: inline-block;
+      position: relative;
+      width: 20rem;
+      height: 20rem;
+    }
+    .lds-ripple div {
+      position: absolute;
+      border: 4px solid #fff;
+      opacity: 1;
+      border-radius: 50%;
+      animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+    .lds-ripple div:nth-child(2) {
+      animation-delay: -0.5s;
+    }
+    @keyframes lds-ripple {
+      0% {
+        top: 10rem;
+        left: 10rem;
+        width: 0;
+        height: 0;
+        opacity: 1;
+      }
+      100% {
+        top: 0px;
+        left: 0px;
+        width: 20rem;
+        height: 20rem;
+        opacity: 0;
       }
     }
   }
