@@ -14,11 +14,14 @@ export default {
 @import '../../assets/variables.scss';
 
   header {
+    display: flex;
+    align-items: center;
     height: 10vh;
     background-color: $darkPrimary;
 
     img {
-      height: 80%;
+      height: 70%;
+      margin-left: 1rem;
     }
   }
 </style>
