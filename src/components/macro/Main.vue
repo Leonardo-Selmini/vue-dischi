@@ -1,9 +1,11 @@
 <template>
   <main>
+    <!-- @filterArtist="filterArtist.author, :prop="filteredByArtist" -->
+    <Select @filterGenre="filterSongs"/>
     <div class="card-container" v-if="songs != null">
       <Card
         class="card"
-        v-for="(song, index) in songs"
+        v-for="(song, index) in filteredSongs"
         :key="index"
         :song="song"
       />
@@ -18,18 +20,43 @@
 </template>
 
 <script>
+import Select from "./../commons/Select.vue";
 import Card from "./../commons/Card.vue";
 import axios from "../../../node_modules/axios";
 
 export default {
   name: "Main",
   components: {
-    Card,
+    Select,
+    Card
   },
   data() {
     return {
       songs: null,
+      filteredSongs: null,
+      filteredByArtist: null,
     };
+  },
+  methods: {
+    filterSongs(payload) {
+      if(payload == 'all') {
+        this.filteredSongs = this.songs;
+      } else {
+        this.filteredSongs = this.songs.filter((song) => {
+          return song.genre.toLowerCase().includes(payload.toLowerCase());
+        })
+      }
+    },
+    // filterArtist(payload) {
+    //   if(payload == 'all') {
+    //     this.filteredByArtist = this.filteredSongs
+    //     console.log(this.filteredByArtist);
+    //   } else {
+    //     this.filteredByArtist = this.filteredSongs.filter((song) => {
+    //       return song.author.toLowerCase().includes(payload.toLowerCase());
+    //     })
+    //   }
+    // }
   },
   created() {
     axios
@@ -37,6 +64,8 @@ export default {
       .then((response) => {
         // handle success
         this.songs = response.data.response;
+        this.filteredSongs = response.data.response;
+        console.log(response);
       })
       .catch(function (error) {
         // handle error
@@ -59,7 +88,7 @@ main {
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
     margin: 0 auto;
-    padding: 2rem 0;
+    padding-bottom: 2rem;
 
     .card {
       display: flex;
