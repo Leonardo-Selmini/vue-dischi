@@ -1,7 +1,7 @@
 <template>
   <main>
     <!-- @filterArtist="filterArtist.author, :prop="filteredByArtist" -->
-    <Select @filterGenre="filterSongs"/>
+    <Select @change="filterSongs" @filterArtist="filterArtist" :prop="filteredSongs"/>
     <div class="card-container" v-if="songs != null">
       <Card
         class="card"
@@ -47,16 +47,13 @@ export default {
         })
       }
     },
-    // filterArtist(payload) {
-    //   if(payload == 'all') {
-    //     this.filteredByArtist = this.filteredSongs
-    //     console.log(this.filteredByArtist);
-    //   } else {
-    //     this.filteredByArtist = this.filteredSongs.filter((song) => {
-    //       return song.author.toLowerCase().includes(payload.toLowerCase());
-    //     })
-    //   }
-    // }
+    filterArtist(payload) {
+      this.filteredByArtist = this.songs.filter((song) => {
+        return song.author.toLowerCase().includes(payload.toLowerCase());
+      })
+      console.log(this.filteredByArtist);
+      this.filteredSongs = this.filteredByArtist
+    }
   },
   created() {
     axios
@@ -65,6 +62,7 @@ export default {
         // handle success
         this.songs = response.data.response;
         this.filteredSongs = response.data.response;
+        this.filteredByArtist = response.data.response;
         console.log(response);
       })
       .catch(function (error) {
